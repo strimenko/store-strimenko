@@ -1,8 +1,16 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/strimenko/store-strimenko/pkg/service"
+)
 
 type Handler struct {
+	services *service.Service
+}
+
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -20,27 +28,27 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			helmet.POST("/", h.createHelmet)
 			helmet.GET("/", h.getAllHelmets)
-			helmet.GET("/:iditem", h.getHelmetById)
-			helmet.PUT("/:iditem", h.updateHelmet)
-			helmet.DELETE("/:iditem", h.deleteHelmet)
+			helmet.GET("/:itemid", h.getHelmetById)
+			helmet.PUT("/:itemid", h.updateHelmet)
+			helmet.DELETE("/:itemid", h.deleteHelmet)
 		}
 
 		bodyarmor := api.Group("/bodyarmor")
 		{
 			bodyarmor.POST("/", h.createBodyarmor)
 			bodyarmor.GET("/", h.getAllBodyarmors)
-			bodyarmor.GET("/:iditem", h.getBodyarmorById)
-			bodyarmor.PUT("/:iditem", h.updateBodyarmor)
-			bodyarmor.DELETE("/:iditem", h.deleteBodyarmor)
+			bodyarmor.GET("/:itemid", h.getBodyarmorById)
+			bodyarmor.PUT("/:itemid", h.updateBodyarmor)
+			bodyarmor.DELETE("/:itemid", h.deleteBodyarmor)
 		}
 
 		backpack := api.Group("/backpack")
 		{
 			backpack.POST("/", h.createBackpack)
 			backpack.GET("/", h.getAllBackpacks)
-			backpack.GET("/:iditem", h.getBackpackById)
-			backpack.PUT("/:iditem", h.updateBackpack)
-			backpack.DELETE("/:iditem", h.deleteBackpack)
+			backpack.GET("/:itemid", h.getBackpackById)
+			backpack.PUT("/:itemid", h.updateBackpack)
+			backpack.DELETE("/:itemid", h.deleteBackpack)
 		}
 	}
 	return router
