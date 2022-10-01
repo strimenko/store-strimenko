@@ -8,7 +8,7 @@ import (
 
 const (
 	usersTable      = "users"
-	backpacksTable  = "backpaks"
+	backpacksTable  = "backpacks"
 	bodyarmorsTable = "bodyarmors"
 	helmetsTable    = "helmets"
 )

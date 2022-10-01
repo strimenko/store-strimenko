@@ -1,17 +1,63 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/strimenko/store-strimenko/models"
+)
 
 func (h *Handler) createBodyarmor(c *gin.Context) {
+	var input models.Bodyarmor
 
+	if err := c.BindJSON(&input); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	itemId, err := h.services.Bodyarmor.CreateBodyarmor(input)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"itemid": itemId,
+	})
+
+}
+
+type getAllBodyarmorResponse struct {
+	Data []models.Bodyarmor
 }
 
 func (h *Handler) getAllBodyarmors(c *gin.Context) {
+	lists, err := h.services.Bodyarmor.GetAll()
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
+	c.JSON(http.StatusOK, getAllBodyarmorResponse{
+		Data: lists,
+	})
 }
 
 func (h *Handler) getBodyarmorById(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("itemid"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid itemid param")
+		return
+	}
 
+	lists, err := h.services.Bodyarmor.GetById(id)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, lists)
 }
 
 func (h *Handler) updateBodyarmor(*gin.Context) {

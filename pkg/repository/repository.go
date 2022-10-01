@@ -11,12 +11,21 @@ type Authorization interface {
 }
 
 type Backpack interface {
+	Create(models models.Backpack) (int, error)
+	GetAll() ([]models.Backpack, error)
+	GetById(itemId int) (models.Backpack, error)
 }
 
 type Bodyarmor interface {
+	Create(models models.Bodyarmor) (int, error)
+	GetAll() ([]models.Bodyarmor, error)
+	GetById(itemId int) (models.Bodyarmor, error)
 }
 
 type Helmet interface {
+	Create(models models.Helmet) (int, error)
+	GetAll() ([]models.Helmet, error)
+	GetById(itemId int) (models.Helmet, error)
 }
 
 type Repository struct {
@@ -29,5 +38,8 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Backpack:      NewBackpackPostgres(db),
+		Bodyarmor:     NewBodyarmorPostgres(db),
+		Helmet:        NewHelmetPostgres(db),
 	}
 }

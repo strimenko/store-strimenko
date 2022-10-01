@@ -8,21 +8,21 @@ CREATE TABLE users
 
 CREATE TABLE backpacks
 (
-    itemid serial not null unique,
-    itemname varchar(255) not null,
+    itemId serial not null unique,
+    itemName varchar(255) not null,
     price serial not null
 );
 
 CREATE TABLE bodyarmors
 (
-    itemid serial not null unique,
-    itemname varchar(255) not null,
+    itemId serial not null unique,
+    itemName varchar(255) not null,
     price serial not null
 );
 
 CREATE TABLE helmets
 (
-    itemid serial not null unique,
-    itemname varchar(255) not null,
+    itemId serial not null unique,
+    itemName varchar(255) not null,
     price serial not null
 );
