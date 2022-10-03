@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/strimenko/store-strimenko/models"
@@ -48,4 +49,37 @@ func (r *HelmetPostgres) GetById(itemId int) (models.Helmet, error) {
 	err := r.db.Get(&lists, query, itemId)
 
 	return lists, err
+}
+
+func (r *HelmetPostgres) Update(itemId int, input models.UpdateItem) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.ItemName != nil {
+		setValues = append(setValues, fmt.Sprintf("itemname=$%d", argId))
+		args = append(args, *input.ItemName)
+		argId++
+	}
+
+	if input.Price != nil {
+		setValues = append(setValues, fmt.Sprintf("price=$%d", argId))
+		args = append(args, *input.Price)
+		argId++
+	}
+
+	setQuerry := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE itemid = $%d", helmetsTable, setQuerry, argId)
+	args = append(args, itemId)
+
+	_, err := r.db.Exec(query, args...)
+	return err
+}
+
+func (r *HelmetPostgres) Delete(itemId int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE itemid = $1", helmetsTable)
+	_, err := r.db.Exec(query, itemId)
+
+	return err
 }

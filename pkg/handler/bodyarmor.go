@@ -60,10 +60,41 @@ func (h *Handler) getBodyarmorById(c *gin.Context) {
 	c.JSON(http.StatusOK, lists)
 }
 
-func (h *Handler) updateBodyarmor(*gin.Context) {
+func (h *Handler) updateBodyarmor(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("itemid"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid itemid param")
+		return
+	}
 
+	var input models.UpdateItem
+	if err := c.BindJSON(&input); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Bodyarmor.Update(id, input); err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, StatusResponse{"ok"})
 }
 
 func (h *Handler) deleteBodyarmor(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("itemid"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid itemid param")
+		return
+	}
 
+	err = h.services.Bodyarmor.Delete(id)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, StatusResponse{
+		Status: "ok",
+	})
 }

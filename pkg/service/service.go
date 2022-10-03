@@ -15,18 +15,24 @@ type Backpack interface {
 	CreateBackpack(item models.Backpack) (int, error)
 	GetAll() ([]models.Backpack, error)
 	GetById(itemId int) (models.Backpack, error)
+	Update(itemId int, input models.UpdateItem) error
+	Delete(itemId int) error
 }
 
 type Bodyarmor interface {
 	CreateBodyarmor(item models.Bodyarmor) (int, error)
 	GetAll() ([]models.Bodyarmor, error)
 	GetById(itemId int) (models.Bodyarmor, error)
+	Update(itemId int, input models.UpdateItem) error
+	Delete(itemId int) error
 }
 
 type Helmet interface {
 	CreateHelmet(item models.Helmet) (int, error)
 	GetAll() ([]models.Helmet, error)
 	GetById(itemId int) (models.Helmet, error)
+	Update(itemId int, input models.UpdateItem) error
+	Delete(itemId int) error
 }
 
 type Service struct {

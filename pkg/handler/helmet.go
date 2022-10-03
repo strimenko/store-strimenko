@@ -61,9 +61,38 @@ func (h *Handler) getHelmetById(c *gin.Context) {
 }
 
 func (h *Handler) updateHelmet(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("itemid"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid itemid param")
+		return
+	}
 
+	var input models.UpdateItem
+	if err := c.BindJSON(&input); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Helmet.Update(id, input); err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, StatusResponse{"ok"})
 }
 
 func (h *Handler) deleteHelmet(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("itemid"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid itemid param")
+		return
+	}
 
+	err = h.services.Helmet.Delete(id)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, StatusResponse{"ok"})
 }

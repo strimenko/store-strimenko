@@ -24,3 +24,14 @@ func (s *BackpackService) GetAll() ([]models.Backpack, error) {
 func (s *BackpackService) GetById(itemId int) (models.Backpack, error) {
 	return s.repo.GetById(itemId)
 }
+
+func (s *BackpackService) Update(itemId int, input models.UpdateItem) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+	return s.repo.Update(itemId, input)
+}
+
+func (s *BackpackService) Delete(itemId int) error {
+	return s.repo.Delete(itemId)
+}

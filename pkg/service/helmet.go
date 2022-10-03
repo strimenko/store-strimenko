@@ -24,3 +24,14 @@ func (s *HelmetService) GetAll() ([]models.Helmet, error) {
 func (s *HelmetService) GetById(itemId int) (models.Helmet, error) {
 	return s.repo.GetById(itemId)
 }
+
+func (s *HelmetService) Update(itemId int, input models.UpdateItem) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+	return s.repo.Update(itemId, input)
+}
+
+func (s *HelmetService) Delete(itemId int) error {
+	return s.repo.Delete(itemId)
+}
